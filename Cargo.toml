@@ -3,14 +3,8 @@ name = "castle-core"
 version = "0.0.1"
 authors = ["KatCote"]
 edition = "2021"
-description = ""
-license = ""
-homepage = ""
 repository = "https://github.com/KatCote/castle-core"
-documentation = ""
 readme = "README.md"
-categories = [""]
-keywords = [""]
 exclude = ["target", "Cargo.lock"]
 
 [lib]

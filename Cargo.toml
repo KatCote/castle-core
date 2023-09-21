@@ -1,10 +1,13 @@
 [package]
 name = "castle-core"
+description = "CastleCore - Core engine for Altenstein (and same projects)"
 version = "0.0.1"
 authors = ["KatCote"]
 edition = "2021"
 repository = "https://github.com/KatCote/castle-core"
 readme = "README.md"
+license = "MIT"
+license-file = "LICENSE"
 exclude = ["target", "Cargo.lock"]
 
 [lib]

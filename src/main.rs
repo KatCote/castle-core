@@ -1,3 +1,8 @@
+extern crate castlecore;
+
+use castlecore::functions;
+
 fn main() {
-    println!("Hello, world!");
+    functions::print_hello();
+    castlecore::print_ver();
 }

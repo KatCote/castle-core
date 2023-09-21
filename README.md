@@ -1,2 +1,2 @@
 # CastleCore
-CastleCore - Core engine for Altenstein (and same projects)
+Core engine for [altenstein](https://github.com/KatCote/altenstein-rust) (and same projects)

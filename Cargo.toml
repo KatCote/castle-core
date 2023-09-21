@@ -1,7 +1,21 @@
 [package]
-name = "castle_core"
-version = "0.1.0"
+name = "castle-core"
+version = "0.0.1"
+authors = ["KatCote"]
 edition = "2021"
+description = ""
+license = ""
+homepage = ""
+repository = ""
+documentation = ""
+readme = ""
+categories = [""]
+keywords = [""]
+exclude = ["target", "Cargo.lock"]
+
+[lib]
+name = "castlecore"
+path = "src/lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

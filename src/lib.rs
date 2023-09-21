@@ -2,10 +2,10 @@
 //!
 //! It's my crate!
 
-/// Example of module 
+/// A temporary module for debugging functions.
 pub mod functions;
 
-/// Example of crate (not module) functions
-pub fn print_ver() {
-    println!("v0.0.1");
+/// Print current CastleCore version
+pub fn cc_ver() {
+    println!("v0.0.2");
 }

@@ -3,7 +3,7 @@
 //! It's my crate!
 
 // Public constants
-pub(crate) const CC_VER: &str = "v0.0.3";
+pub(crate) const CC_VER: &str = "v0.0.4";
 
 /// A temporary module for debugging functions.
 pub mod functions;

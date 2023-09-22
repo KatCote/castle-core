@@ -1,7 +1,7 @@
 [package]
 name = "castle-core"
 description = "CastleCore - Core engine for Altenstein (and same projects)"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["KatCote"]
 edition = "2021"
 repository = "https://github.com/KatCote/castle-core"
@@ -17,4 +17,5 @@ path = "src/lib.rs"
 
 [dependencies]
 
+console = "0.15.7"
 crossterm = "0.27.0"

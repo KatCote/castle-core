@@ -1,10 +1,10 @@
 /// Test function for soon updates
-use std::io::{stdout};
+use std::io::stdout;
 use crossterm::{
     execute,
     cursor::{Hide, Show},
     style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor},
-    terminal::{EnterAlternateScreen, LeaveAlternateScreen, SetTitle},};
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, SetTitle, SetSize, size},};
 use crate::CC_VER;
 use console::*;
 
@@ -44,18 +44,21 @@ pub fn initscr() -> std::io::Result<()> {
 
 /// Screen usability (will be rewrited soon) after initscr.
 /// 'q' for quit.
-pub fn usescr() {
+pub fn usescr() -> std::io::Result<()> {
+
+    let (cols, rows) = size()?;
+    //execute!(stdout(), SetSize(cols, rows)).unwrap();
 
     let term = Term::stdout();
 
-    loop {
+    Ok(loop {
         let temp_input_var = term.read_char();
         match temp_input_var {
             Ok('q') | Ok('Q') => break,
             Ok(_) => continue,
             Err(_) => todo!()
         }
-    }
+    })
 
 }
 

@@ -4,8 +4,7 @@ use castlecore::functions;
 
 fn main() { 
     { let _ = functions::initscr(); }
-    //{ let _ = functions::print_hello(); }
-    functions::usescr();
+    { let _ = functions::usescr(); }
     println!("");
     { let _ = functions::endscr(); }
 }

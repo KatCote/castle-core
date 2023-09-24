@@ -64,13 +64,6 @@ pub fn usescr() -> std::io::Result<()> {
 
 }
 
-pub fn create_map_file() -> std::io::Result<()> {
-    std::fs::create_dir("../../resourses")?;
-    let mut file = File::create("../../resourses/WORLD-BASE-1-1.map")?;
-    file.write_all(b"1234567890abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*(){}:></")?;
-    Ok(())
-}
-
 /// Exit from engine screen.
 pub fn endscr() -> std::io::Result<()> {
 

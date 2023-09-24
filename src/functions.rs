@@ -7,6 +7,8 @@ use crossterm::{
     terminal::{EnterAlternateScreen, LeaveAlternateScreen, SetTitle, SetSize, size},};
 use crate::CC_VER;
 use console::*;
+use std::fs::File;
+use std::io::prelude::*;
 
 /// Print "Powered by CastleCore"
 pub fn print_hello() -> std::io::Result<()> { 
@@ -60,6 +62,13 @@ pub fn usescr() -> std::io::Result<()> {
         }
     })
 
+}
+
+pub fn create_map_file() -> std::io::Result<()> {
+    std::fs::create_dir("../../resourses")?;
+    let mut file = File::create("../../resourses/WORLD-BASE-1-1.map")?;
+    file.write_all(b"1234567890abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*(){}:></")?;
+    Ok(())
 }
 
 /// Exit from engine screen.

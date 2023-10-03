@@ -2,13 +2,26 @@
 use std::io::stdout;
 use crossterm::{
     execute,
-    cursor::{Hide, Show},
+    cursor::{Hide, Show, SavePosition, RestorePosition, MoveTo},
     style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor},
-    terminal::{EnterAlternateScreen, LeaveAlternateScreen, SetTitle, SetSize, size},};
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, SetTitle, /*SetSize,*/ size},};
 use crate::CC_VER;
 use console::*;
-use std::fs::File;
-use std::io::prelude::*;
+
+/// Print char on current position 
+pub fn mvprintch(x: u16, y: u16, msg: &char) {
+
+    execute!(
+        stdout(),
+
+        SavePosition,
+
+        MoveTo(x, y),
+        Print(msg),
+
+        RestorePosition,
+        );
+}
 
 /// Print "Powered by CastleCore"
 pub fn print_hello() -> std::io::Result<()> { 
@@ -48,7 +61,7 @@ pub fn initscr() -> std::io::Result<()> {
 /// 'q' for quit.
 pub fn usescr() -> std::io::Result<()> {
 
-    let (cols, rows) = size()?;
+    let (_cols, _rows) = size()?;
     //execute!(stdout(), SetSize(cols, rows)).unwrap();
 
     let term = Term::stdout();

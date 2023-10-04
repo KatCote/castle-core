@@ -16,6 +16,9 @@ pub(crate) const LR_LINE: char = '┃';
 
 /// A temporary module for debugging functions.
 pub mod functions;
+pub mod border;
+pub mod screen;
+pub mod render;
 
 /// Return current CastleCore version
 pub fn cc_ver() -> &'static str {

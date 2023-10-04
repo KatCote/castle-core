@@ -1,15 +1,13 @@
 /// Test function for soon updates
-use std::io::{ stdout, Write };
+use std::io::stdout;
 use crossterm::{
     execute,
-    cursor::{Hide, Show, SavePosition, RestorePosition, MoveTo},
-    style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor},
-    terminal::{EnterAlternateScreen, LeaveAlternateScreen, SetTitle, /*SetSize,*/ size},};
-use crate::*;
-use console::*;
+    cursor::{SavePosition, RestorePosition, MoveTo},
+    style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor}
+};
 
 /// Print char on current position 
-pub fn printch(x: u16, y: u16, msg: &char) {
+pub fn printch(x: u16, y: u16, msg: &char) -> std::io::Result<()> {
 
     execute!(
         stdout(),
@@ -18,11 +16,13 @@ pub fn printch(x: u16, y: u16, msg: &char) {
         MoveTo(x, y),
         Print(msg),
         RestorePosition,
-    );
+    )?;
+
+    Ok(())
 }
 
-pub fn printmsg(x: u16, y: u16, msg: &str)
-{
+pub fn printmsg(x: u16, y: u16, msg: &str) -> std::io::Result<()> {
+
     execute!(
         stdout(),
 
@@ -30,99 +30,40 @@ pub fn printmsg(x: u16, y: u16, msg: &str)
         MoveTo(x, y),
         Print(msg),
         RestorePosition
-        );
-}
+        )?;
 
-/// Border full window (without loot thread now)
-pub fn border_full_window() -> std::io::Result<()> {
-
-    //loop{
-    let (_cols, _rows) = size()?;
-
-    for i in 0.._cols {
-        for j in 0.._rows {
-
-            if i == 0 && j == 0
-                { printch(i, j, &LU_CORNER); }
-            else if i == 0 && j == (_rows-1)
-                { printch(i, j, &LD_CORNER); }
-            else if i == (_cols-1) && j == 0
-                { printch(i, j, &RU_CORNER); }
-            else if i == (_cols-1) && j == (_rows-1)
-                { printch(i, j, &RD_CORNER); }
-            else if i != 0 && i != (_cols-1) && (j == 0 || j == (_rows-1))
-                { printch(i, j, &UD_LINE); }
-            else if (i == 0 || i == (_cols-1)) && j != 0 && j != (_rows-1)
-                { printch(i, j, &LR_LINE); }
-            //else
-                //{ printch(i, j, &' '); }
-
-        }
-    }//}
-
-    Ok(())
+        Ok(())
 }
 
 /// Print "Powered by CastleCore"
 pub fn print_hello(x: u16, y: u16) -> std::io::Result<()> { 
 
-    execute!(
-        stdout(),
-        SetForegroundColor(Color::Black),
-        SetBackgroundColor(Color::White))?;
+    set_color(Color::Black, Color::White)?;
+    printmsg(x, y, " Powered by ")?;
 
-    printmsg(x, y, " Powered by ");
+    set_color(Color::White, Color::Black)?;
+    printmsg(x + 12, y, " CastleCore ")?;
 
-    execute!(
-        stdout(),
-        SetForegroundColor(Color::White),
-        SetBackgroundColor(Color::Black))?;
-
-    printmsg(x + 12, y, " CastleCore ");
-
-    execute!(stdout(), ResetColor)?;
+    reset_color()?;
 
     Ok(())
 }
 
-/// Init screen (base for next engine).
-/// Input: true - enable loop, false - only init screen.
-pub fn initscr() -> std::io::Result<()> {
+pub fn set_color(fg_color: Color, bg_color: Color) -> std::io::Result<()> {
 
-    let title: &str = &("CastleCore ".to_owned() + &CC_VER);
-
-    execute!(stdout(), EnterAlternateScreen, Hide)?; 
-    execute!(stdout(), SetTitle(title))?;
-
-    //let _ = print_hello(1, 1);
+    execute!(
+        stdout(),
+        SetForegroundColor(fg_color),
+        SetBackgroundColor(bg_color))?; 
 
     Ok(())
 }
 
-/// Screen usability (will be rewrited soon) after initscr.
-/// 'q' for quit.
-pub fn usescr() -> std::io::Result<()> {
+pub fn reset_color() -> std::io::Result<()> {
 
-    let (_cols, _rows) = size()?;
-    //execute!(stdout(), SetSize(cols, rows)).unwrap();
-
-    let term = Term::stdout();
-
-    Ok(loop {
-        let temp_input_var = term.read_char();
-        match temp_input_var {
-            Ok('q') | Ok('Q') => break,
-            Ok(_) => continue,
-            Err(_) => todo!()
-        }
-    })
-
-}
-
-/// Exit from engine screen.
-pub fn endscr() -> std::io::Result<()> {
-
-    execute!(stdout(), LeaveAlternateScreen, Show)?;
+    execute!(
+        stdout(),
+        ResetColor)?;
 
     Ok(())
 }

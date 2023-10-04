@@ -1,14 +1,11 @@
 extern crate castlecore;
 
-use castlecore::functions;
-use crossterm::terminal::size;
+use castlecore::*;
 
 fn main() { 
-    let _ = functions::initscr();
-    let _ = functions::border_full_window();
-    let Ok((_cols, _rows)) = size() else { todo!() };
-    let _ = functions::print_hello(_cols/2 - 12, _rows);
-    let _ = functions::usescr();
+    let _ = screen::initscr();
+    let _ = border::write_full_window();
+    let _ = screen::usescr();
     println!("");
-    let _ = functions::endscr();
+    let _ = screen::endscr();
 }

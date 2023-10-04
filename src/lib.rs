@@ -18,6 +18,6 @@ pub(crate) const LR_LINE: char = '┃';
 pub mod functions;
 
 /// Return current CastleCore version
-pub fn cc_ver() -> String {
-    (&CC_VER).to_string()
+pub fn cc_ver() -> &'static str {
+    &CC_VER
 }

@@ -5,22 +5,49 @@ use crossterm::{
     cursor::{Hide, Show, SavePosition, RestorePosition, MoveTo},
     style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor},
     terminal::{EnterAlternateScreen, LeaveAlternateScreen, SetTitle, /*SetSize,*/ size},};
-use crate::CC_VER;
+use crate::*;
 use console::*;
 
 /// Print char on current position 
-pub fn mvprintch(x: u16, y: u16, msg: &char) {
+pub fn printch(x: u16, y: u16, msg: &char) {
 
     execute!(
         stdout(),
 
         SavePosition,
-
         MoveTo(x, y),
         Print(msg),
-
         RestorePosition,
-        );
+    );
+}
+
+pub fn create_full_window() -> std::io::Result<()> {
+
+    //loop{
+    let (_cols, _rows) = size()?;
+
+    for i in 0.._cols {
+        for j in 0.._rows {
+
+            if i == 0 && j == 0
+                { printch(i, j, &LU_CORNER); }
+            else if i == 0 && j == (_rows-1)
+                { printch(i, j, &LD_CORNER); }
+            else if i == (_cols-1) && j == 0
+                { printch(i, j, &RU_CORNER); }
+            else if i == (_cols-1) && j == (_rows-1)
+                { printch(i, j, &RD_CORNER); }
+            else if i != 0 && i != (_cols-1) && (j == 0 || j == (_rows-1))
+                { printch(i, j, &UD_LINE); }
+            else if (i == 0 || i == (_cols-1)) && j != 0 && j != (_rows-1)
+                { printch(i, j, &LR_LINE); }
+            else
+                { printch(i, j, &' '); }
+
+        }
+    }//}
+
+    Ok(())
 }
 
 /// Print "Powered by CastleCore"

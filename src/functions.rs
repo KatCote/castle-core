@@ -1,5 +1,5 @@
 /// Test function for soon updates
-use std::io::stdout;
+use std::io::{ stdout, Write };
 use crossterm::{
     execute,
     cursor::{Hide, Show, SavePosition, RestorePosition, MoveTo},
@@ -21,7 +21,20 @@ pub fn printch(x: u16, y: u16, msg: &char) {
     );
 }
 
-pub fn create_full_window() -> std::io::Result<()> {
+pub fn printmsg(x: u16, y: u16, msg: &str)
+{
+    execute!(
+        stdout(),
+
+        SavePosition,
+        MoveTo(x, y),
+        Print(msg),
+        RestorePosition
+        );
+}
+
+/// Border full window (without loot thread now)
+pub fn border_full_window() -> std::io::Result<()> {
 
     //loop{
     let (_cols, _rows) = size()?;
@@ -41,8 +54,8 @@ pub fn create_full_window() -> std::io::Result<()> {
                 { printch(i, j, &UD_LINE); }
             else if (i == 0 || i == (_cols-1)) && j != 0 && j != (_rows-1)
                 { printch(i, j, &LR_LINE); }
-            else
-                { printch(i, j, &' '); }
+            //else
+                //{ printch(i, j, &' '); }
 
         }
     }//}
@@ -51,22 +64,24 @@ pub fn create_full_window() -> std::io::Result<()> {
 }
 
 /// Print "Powered by CastleCore"
-pub fn print_hello() -> std::io::Result<()> { 
+pub fn print_hello(x: u16, y: u16) -> std::io::Result<()> { 
 
     execute!(
         stdout(),
-
         SetForegroundColor(Color::Black),
-        SetBackgroundColor(Color::Red),
-        Print(" Powered by "),
+        SetBackgroundColor(Color::White))?;
 
-        SetForegroundColor(Color::Red),
-        SetBackgroundColor(Color::Black),
-        Print(" CastleCore "),
+    printmsg(x, y, " Powered by ");
 
-        ResetColor
-    )?;
- 
+    execute!(
+        stdout(),
+        SetForegroundColor(Color::White),
+        SetBackgroundColor(Color::Black))?;
+
+    printmsg(x + 12, y, " CastleCore ");
+
+    execute!(stdout(), ResetColor)?;
+
     Ok(())
 }
 
@@ -79,7 +94,7 @@ pub fn initscr() -> std::io::Result<()> {
     execute!(stdout(), EnterAlternateScreen, Hide)?; 
     execute!(stdout(), SetTitle(title))?;
 
-    let _ = print_hello();
+    //let _ = print_hello(1, 1);
 
     Ok(())
 }

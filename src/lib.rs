@@ -1,11 +1,12 @@
 //! # CastleCore
 //!
-//! It's my crate!
+//! Core Engine for development (Altenstein and same projects.)
+//! Will pack with map (and same) editor base on CC.
 
 // Public constants
 pub(crate) const CC_VER: &str = "v0.0.5";
 
-// Heavy lines
+// Heavy lines for write borders
 pub(crate) const LU_CORNER: char = '┏';
 pub(crate) const LD_CORNER: char = '┗';
 pub(crate) const RU_CORNER: char = '┓';

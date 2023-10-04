@@ -49,6 +49,7 @@ pub fn print_hello(x: u16, y: u16) -> std::io::Result<()> {
     Ok(())
 }
 
+/// Set Foreground and Background color
 pub fn set_color(fg_color: Color, bg_color: Color) -> std::io::Result<()> {
 
     execute!(
@@ -59,6 +60,7 @@ pub fn set_color(fg_color: Color, bg_color: Color) -> std::io::Result<()> {
     Ok(())
 }
 
+/// Reset colors
 pub fn reset_color() -> std::io::Result<()> {
 
     execute!(

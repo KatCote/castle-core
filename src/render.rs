@@ -15,6 +15,7 @@ pub enum RenderInterface {
     InfoItem
 }
 
+/// Render selected layer on current ractangle
 pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) {
 
     for i in x1..x2 {

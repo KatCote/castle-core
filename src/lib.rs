@@ -16,8 +16,11 @@ pub(crate) const LR_LINE: char = '┃';
 
 /// A temporary module for debugging functions.
 pub mod functions;
+/// A module containing all the functions related to the borders (temporary description)
 pub mod border;
+/// A module containing all the functions related to the screen (temporary description)
 pub mod screen;
+/// A module containing all the functions related to the render (temporary description)
 pub mod render;
 
 /// Return current CastleCore version

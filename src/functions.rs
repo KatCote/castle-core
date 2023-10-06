@@ -6,7 +6,7 @@ use crossterm::{
     style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor}
 };
 
-/// Print char on current position 
+/// Print char at current position 
 pub fn printch(x: u16, y: u16, msg: &char) -> std::io::Result<()> {
 
     execute!(
@@ -21,6 +21,7 @@ pub fn printch(x: u16, y: u16, msg: &char) -> std::io::Result<()> {
     Ok(())
 }
 
+/// Print text at current position
 pub fn printmsg(x: u16, y: u16, msg: &str) -> std::io::Result<()> {
 
     execute!(

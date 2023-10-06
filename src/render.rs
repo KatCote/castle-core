@@ -11,6 +11,7 @@ pub enum RenderInterface {
     InfoItem
 }
 
+/// Map layers enum for RenderInterface
 #[derive(Debug)]
 pub enum Map {
     Base,
@@ -19,6 +20,7 @@ pub enum Map {
     Wall
 }
 
+/// Inventory Pages enum for RenderInterface
 #[derive(Debug)]
 pub enum Inventory {
     Page1,

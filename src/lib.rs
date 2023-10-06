@@ -4,7 +4,7 @@
 //! Will pack with map (and same) editor base on CC.
 
 // Public constants
-pub(crate) const CC_VER: &str = "v0.0.5";
+pub(crate) const CC_VER: &str = "v0.0.6";
 
 // Heavy lines for write borders
 pub(crate) const LU_CORNER: char = '┏';

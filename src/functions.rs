@@ -36,7 +36,21 @@ pub fn printmsg(x: u16, y: u16, msg: &str) -> std::io::Result<()> {
 }
 
 /// Print "Powered by CastleCore"
-pub fn print_hello(x: u16, y: u16) -> std::io::Result<()> { 
+pub fn print_hello() -> std::io::Result<()> { 
+
+    set_color(Color::Black, Color::Red)?;
+    Print(" Powered by ");
+
+    set_color(Color::Red, Color::Black)?;
+    Print(" CastleCore ");
+
+    reset_color()?;
+
+    Ok(())
+}
+
+/// Print movable "Powered by CastleCore"
+pub fn mv_print_hello(x: u16, y: u16) -> std::io::Result<()> { 
 
     set_color(Color::Black, Color::White)?;
     printmsg(x, y, " Powered by ")?;

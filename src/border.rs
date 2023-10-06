@@ -1,5 +1,7 @@
 use crossterm::terminal::size;
-use crate::{*, functions::printch};
+use crate::functions::*;
+use crate::render::*;
+use crate::*;
 
 /// Border full window (without loot thread now)
 pub fn write_full_window() -> std::io::Result<()> {
@@ -28,9 +30,9 @@ pub fn write_full_window() -> std::io::Result<()> {
         }
     }
 
-    let _ = functions::print_hello(_cols/2 - 12, _rows);
+    let _ = mv_print_hello(_cols/2 - 12, _rows);
 
-    //let _ = render::render_layer(1, 1, _cols-1, _rows-1, render::RenderInterface::DEFAULT); }
+    let _ = render_layer(1, 1, _cols-1, _rows-1, RenderInterface::DEFAULT); 
 
     Ok(())
 }

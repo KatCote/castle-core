@@ -3,11 +3,24 @@ use crate::functions::*;
 use crate::render::*;
 use crate::*;
 
-/// Border full window (without loot thread now)
-pub fn write_full_window() -> std::io::Result<()> {
+pub enum Screen {
+    Empty,
+    RenderLayer(render::RenderInterface)
+}
 
-    //loop{
+/// Border full window (without loot thread now)
+pub fn write_full_window(screen: Screen) -> std::io::Result<()> {
+
+    // Interface layer
+
     let (_cols, _rows) = size()?;
+
+    match screen {
+        Screen::Empty => (),
+        Screen::RenderLayer(ri) => render_layer(1, 1, _cols-1, _rows-1, ri)
+    };
+
+    // Border layer
 
     for i in 0.._cols {
         for j in 0.._rows {
@@ -30,9 +43,9 @@ pub fn write_full_window() -> std::io::Result<()> {
         }
     }
 
-    let _ = mv_print_hello(_cols/2 - 12, _rows);
+    // Info layer
 
-    let _ = render_layer(1, 1, _cols-1, _rows-1, RenderInterface::DEFAULT); 
+    let _ = mv_print_hello(_cols/2 - 12, _rows);
 
     Ok(())
 }

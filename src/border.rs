@@ -15,6 +15,11 @@ pub fn write_full_window(screen: Screen) -> std::io::Result<()> {
 
     let (_cols, _rows) = size()?;
 
+    if _cols < 10 || _rows < 10 {
+        println!("[{} x {}]\nToo small", _cols, _rows);
+        return Ok(());
+    }
+
     match screen {
         Screen::Empty => (),
         Screen::RenderLayer(ri) => render_layer(1, 1, _cols-1, _rows-1, ri)

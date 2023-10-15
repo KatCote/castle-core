@@ -1,7 +1,7 @@
 //! # CastleCore
 //!
 //! Core Engine for development (Altenstein and same projects.)
-//! Will pack with map (and same) editor base on CC.
+//! Will pack with map (and same) editor base on CastleCore.
 
 // Public constants
 pub(crate) const CC_VER: &str = "v0.0.6";

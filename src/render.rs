@@ -4,8 +4,8 @@ use crate::functions::*;
 pub enum RenderInterface {
     Default,
     MapFull,
-    MapLayer(Map),
-    InvPage(Inventory),
+    MapLayer(MapLayer),
+    InvPage(InvPage),
     PlayerParams,
     InfoWorld,
     InfoItem
@@ -13,7 +13,7 @@ pub enum RenderInterface {
 
 /// Map layers enum for RenderInterface
 #[derive(Debug)]
-pub enum Map {
+pub enum MapLayer {
     Base,
     Color,
     Trigger,
@@ -23,7 +23,7 @@ pub enum Map {
 
 /// Inventory Pages enum for RenderInterface
 #[derive(Debug)]
-pub enum Inventory {
+pub enum InvPage {
     Page1, // Like cells
     Page2 // Like shells
 }
@@ -47,11 +47,11 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                 RenderInterface::MapFull => { let _ = printch(i, j, &'1'); },
                 RenderInterface::MapLayer(ref ml) => {  
                     let _ = match ml {
-                        Map::Base => printch(i, j, &'A'),
-                        Map::Color => printch(i, j, &'B'),
-                        Map::Trigger => printch(i, j, &'C'),
-                        Map::Wall => printch(i, j, &'D'),
-                        Map::SumObj(ref object) => {
+                        MapLayer::Base => printch(i, j, &'A'),
+                        MapLayer::Color => printch(i, j, &'B'),
+                        MapLayer::Trigger => printch(i, j, &'C'),
+                        MapLayer::Wall => printch(i, j, &'D'),
+                        MapLayer::SumObj(ref object) => {
                             match object {
                                 Summon::Static => printch(i, j, &'!'),
                                 Summon::Dynamic => printch(i, j, &'@'),
@@ -63,8 +63,8 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                 },
                 RenderInterface::InvPage(ref page) => {
                     let _ = match page {
-                        Inventory::Page1 => printch(i, j, &'E'),
-                        Inventory::Page2 => printch(i, j, &'F')
+                        InvPage::Page1 => printch(i, j, &'E'),
+                        InvPage::Page2 => printch(i, j, &'F')
                     };
                 },
                 RenderInterface::PlayerParams => { let _ = printch(i, j, &'4'); },

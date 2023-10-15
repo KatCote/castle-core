@@ -3,6 +3,7 @@ use crate::functions::*;
 use crate::render::*;
 use crate::*;
 
+/// Screen render variations
 pub enum Screen {
     Empty,
     RenderLayer(render::RenderInterface)

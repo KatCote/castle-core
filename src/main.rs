@@ -7,7 +7,7 @@ use crate::border::*;
 
 fn main() { 
     let _ = initscr();
-    let _ = write_full_window(Screen::RenderLayer(RenderInterface::MapLayer(Map::SumObj(Summon::NPC))));
+    let _ = write_full_window(Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::SumObj(Summon::NPC))));
     //let _ = write_full_window(Screen::Empty);
     let _ = usescr();
     println!("");

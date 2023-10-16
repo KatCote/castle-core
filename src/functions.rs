@@ -7,14 +7,14 @@ use crossterm::{
 };
 
 /// Print char at current position 
-pub fn printch(x: u16, y: u16, msg: &char) -> std::io::Result<()> {
+pub fn printch(x: u16, y: u16, symbol: &char) -> std::io::Result<()> {
 
     execute!(
         stdout(),
 
         SavePosition,
         MoveTo(x, y),
-        Print(msg),
+        Print(symbol),
         RestorePosition,
     )?;
 

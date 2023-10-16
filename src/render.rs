@@ -47,7 +47,7 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                 RenderInterface::Default => { let _ = printch(i, j, &'.'); },
                 RenderInterface::MapFull => { let _ = printch(i, j, &'1'); },
                 RenderInterface::MapLayer(ref ml) => {  
-                    let _ = match ml {
+                    match ml {
                         MapLayer::Base => printch(i, j, &'A'),
                         MapLayer::Color => printch(i, j, &'B'),
                         MapLayer::Trigger => printch(i, j, &'C'),
@@ -64,7 +64,7 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                 },
                 RenderInterface::MiniMap => { let _ = printch(i, j, &'3'); },
                 RenderInterface::InvPage(ref page) => {
-                    let _ = match page {
+                    match page {
                         InvPage::Page1 => printch(i, j, &'E'),
                         InvPage::Page2 => printch(i, j, &'F')
                     };

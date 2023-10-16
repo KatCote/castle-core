@@ -7,80 +7,68 @@ use crossterm::{
 };
 
 /// Print char at current position 
-pub fn printch(x: u16, y: u16, symbol: &char) -> std::io::Result<()> {
+pub fn printch(x: u16, y: u16, symbol: &char){
 
-    execute!(
+    let _ = execute!(
         stdout(),
 
         SavePosition,
         MoveTo(x, y),
         Print(symbol),
         RestorePosition,
-    )?;
-
-    Ok(())
+    );
 }
 
 /// Print text at current position
-pub fn printmsg(x: u16, y: u16, msg: &str) -> std::io::Result<()> {
+pub fn printmsg(x: u16, y: u16, msg: &str) {
 
-    execute!(
+    let _ = execute!(
         stdout(),
 
         SavePosition,
         MoveTo(x, y),
         Print(msg),
         RestorePosition
-        )?;
-
-        Ok(())
+        );
 }
 
 /// Print "Powered by CastleCore"
-pub fn print_hello() -> std::io::Result<()> { 
+pub fn print_hello() { 
 
-    set_color(Color::Black, Color::Red)?;
+    set_color(Color::Black, Color::Red);
     Print(" Powered by ");
 
-    set_color(Color::Red, Color::Black)?;
+    set_color(Color::Red, Color::Black);
     Print(" CastleCore ");
 
-    reset_color()?;
-
-    Ok(())
+    reset_color();
 }
 
 /// Print movable "Powered by CastleCore"
-pub fn mv_print_hello(x: u16, y: u16) -> std::io::Result<()> { 
+pub fn mv_print_hello(x: u16, y: u16){ 
 
-    set_color(Color::Black, Color::White)?;
-    printmsg(x, y, " Powered by ")?;
+    set_color(Color::Black, Color::White);
+    printmsg(x, y, " Powered by ");
 
-    set_color(Color::White, Color::Black)?;
-    printmsg(x + 12, y, " CastleCore ")?;
+    set_color(Color::White, Color::Black);
+    printmsg(x + 12, y, " CastleCore ");
 
-    reset_color()?;
-
-    Ok(())
+    reset_color();
 }
 
 /// Set Foreground and Background color
-pub fn set_color(fg_color: Color, bg_color: Color) -> std::io::Result<()> {
+pub fn set_color(fg_color: Color, bg_color: Color) {
 
-    execute!(
+    let _ = execute!(   // Need to rewrite " let _ = "
         stdout(),
         SetForegroundColor(fg_color),
-        SetBackgroundColor(bg_color))?; 
-
-    Ok(())
+        SetBackgroundColor(bg_color)); 
 }
 
 /// Reset colors
-pub fn reset_color() -> std::io::Result<()> {
+pub fn reset_color() {
 
-    execute!(
+    let _ = execute!(   // Need to rewrite " let _ = "
         stdout(),
-        ResetColor)?;
-
-    Ok(())
+        ResetColor);
 }

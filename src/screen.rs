@@ -8,42 +8,36 @@ use crossterm::{
 
 /// Init screen (base for next engine).
 /// Input: true - enable loop, false - only init screen.
-pub fn initscr() -> std::io::Result<()> {
+pub fn initscr() {
 
     let title: &str = &("CastleCore ".to_owned() + &crate::CC_VER);
 
-    execute!(stdout(), EnterAlternateScreen, Hide)?; 
-    execute!(stdout(), SetTitle(title))?;
-
-    //let _ = print_hello(1, 1);
-
-    Ok(())
+    let _ = execute!(stdout(), EnterAlternateScreen, Hide); 
+    let _ = execute!(stdout(), SetTitle(title));
 }
 
 /// Screen usability (will be rewrited soon) after initscr.
 /// 'q' for quit.
-pub fn usescr() -> std::io::Result<()> {
+pub fn usescr() {
 
-    let (_cols, _rows) = size()?;
+    let Ok((_cols, _rows)) = size() else { return; };
     //execute!(stdout(), SetSize(cols, rows)).unwrap();
 
     let term = Term::stdout();
 
-    Ok(loop {
+    loop {
         let temp_input_var = term.read_char();
         match temp_input_var {
             Ok('q') | Ok('Q') => break,
             Ok(_) => continue,
             Err(_) => todo!()
         }
-    })
+    }
 
 }
 
 /// Exit from engine screen.
-pub fn endscr() -> std::io::Result<()> {
+pub fn endscr() {
 
-    execute!(stdout(), LeaveAlternateScreen, Show)?;
-
-    Ok(())
+    let _ = execute!(stdout(), LeaveAlternateScreen, Show);
 }

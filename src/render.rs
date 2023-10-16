@@ -5,6 +5,7 @@ pub enum RenderInterface {
     Default,
     MapFull,
     MapLayer(MapLayer),
+    MiniMap,
     InvPage(InvPage),
     PlayerParams,
     InfoWorld,
@@ -61,15 +62,16 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                         }
                     };
                 },
+                RenderInterface::MiniMap => { let _ = printch(i, j, &'3'); },
                 RenderInterface::InvPage(ref page) => {
                     let _ = match page {
                         InvPage::Page1 => printch(i, j, &'E'),
                         InvPage::Page2 => printch(i, j, &'F')
                     };
                 },
-                RenderInterface::PlayerParams => { let _ = printch(i, j, &'4'); },
-                RenderInterface::InfoWorld => { let _ = printch(i, j, &'5'); },
-                RenderInterface::InfoItem => { let _ = printch(i, j, &'6'); }
+                RenderInterface::PlayerParams => { let _ = printch(i, j, &'5'); },
+                RenderInterface::InfoWorld => { let _ = printch(i, j, &'6'); },
+                RenderInterface::InfoItem => { let _ = printch(i, j, &'7'); }
             };
         }
     }

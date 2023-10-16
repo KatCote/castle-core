@@ -68,10 +68,10 @@ pub fn write_vertical_split_window(left_screen: Screen, right_screen: Screen, sp
     if split_ratio <= 0.0 { write_full_window(right_screen); return; }
     else if split_ratio >= 1.0 {  write_full_window(left_screen); return; } 
 
-    let r1_x = bar_pos - 1; // TODO --+
-    let r2_x = bar_pos + 1; //        |
-    let r1_y = _rows - 1;   //        |
-    let r2_y: u16 = 1;           // <------+
+    let r1_x = bar_pos - 1;
+    let r2_x = bar_pos + 1;
+    let r1_y = _rows - 1;
+    let r2_y: u16 = 1;
 
     // +----+-----+
     // |    |r2   |

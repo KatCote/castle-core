@@ -13,11 +13,15 @@ pub(crate) const RU_CORNER: char = '┓';
 pub(crate) const RD_CORNER: char = '┛';
 pub(crate) const UD_LINE: char = '━';
 pub(crate) const LR_LINE: char = '┃';
+pub(crate) const UD_T: char = '┳';
+pub(crate) const DU_T: char = '┻';
+//pub(crate) const LR_T: char = '┣';
+//pub(crate) const RL_T: char = '┫';
 
 /// A temporary module for debugging functions.
 pub mod functions;
 /// A module containing all the functions related to the borders (temporary description)
-pub mod border;
+pub mod window;
 /// A module containing all the functions related to the screen (temporary description)
 pub mod screen;
 /// A module containing all the functions related to the render (temporary description)

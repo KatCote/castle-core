@@ -86,12 +86,24 @@ pub fn write_vertical_split_window(left_screen: Screen, right_screen: Screen, sp
 
     match left_screen {
         Screen::Empty => (),
-        Screen::RenderLayer(left_screen_ri) => render_layer(1, 1, r1_x, r1_y, left_screen_ri)
+        Screen::RenderLayer(left_screen_rl) =>render_layer(
+            1,
+            1,
+            r1_x,
+            r1_y,
+            left_screen_rl
+        )
     };
 
     match right_screen {
         Screen::Empty => (),
-        Screen::RenderLayer(right_screen_ri) => render_layer(r2_x, r2_y, _cols-1, _rows-1, right_screen_ri)
+        Screen::RenderLayer(right_screen_rl) => render_layer(
+            r2_x,
+            r2_y,
+            _cols-1,
+            _rows-1,
+            right_screen_rl
+        )
     };
 
     // Border layer

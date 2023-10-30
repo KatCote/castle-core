@@ -86,7 +86,7 @@ pub fn write_vertical_split_window(left_screen: Screen, right_screen: Screen, sp
 
     match left_screen {
         Screen::Empty => (),
-        Screen::RenderLayer(left_screen_rl) =>render_layer(
+        Screen::RenderLayer(left_screen_rl) => render_layer(
             1,
             1,
             r1_x,
@@ -138,5 +138,161 @@ pub fn write_vertical_split_window(left_screen: Screen, right_screen: Screen, sp
     // Info layer
 
     if _cols >= 26 { mv_print_hello(_cols/2 - 12, _rows); }
+
+}
+
+pub fn write_default_game_window(
+    screen_1: Screen,
+    screen_2: Screen,
+    screen_3: Screen,
+    screen_4: Screen,
+    screen_5: Screen,
+    split_ratio_1: f32,
+    split_ratio_2: f32,
+    split_ratio_3: f32,
+    split_ratio_4: f32) {
+    
+    // Define layer
+
+    let Ok((_cols, _rows)) = size() else { return; };
+
+
+    let bar_sr1_x: u16 = ((_cols as f32 - 2.0) * split_ratio_1) as u16;
+    
+    let bar_sr2_y: u16 = ((_rows as f32 - 2.0) * split_ratio_2) as u16;
+
+    let bar_sr3_x: u16 = ((_cols as f32 - 2.0)/2.0 * split_ratio_3) as u16;
+
+    let bar_sr4_x: u16 = (((_cols as f32 - 2.0)/2.0) + ((_cols as f32 - 2.0)/2.0 * split_ratio_4)) as u16;
+
+
+    let s11_x: u16 = 1;
+    let s11_y: u16 = 1;
+
+    let s12_x: u16 = bar_sr1_x - 1;
+    let s12_y: u16 = bar_sr2_y;
+
+
+    let s21_x: u16 = bar_sr1_x + 1;
+    let s21_y: u16 = 1;
+
+    let s22_x: u16 = _cols - 1;
+    let s22_y: u16 = bar_sr2_y;
+
+
+    let s31_x: u16 = 1;
+    let s31_y: u16 = bar_sr2_y + 1;
+
+    let s32_x: u16 = bar_sr3_x - 1;
+    let s32_y: u16 = _rows - 1;
+
+
+    let s41_x: u16 = bar_sr3_x + 1;
+    let s41_y: u16 = bar_sr2_y + 1;
+
+    let s42_x: u16 = bar_sr4_x - 1;
+    let s42_y: u16 = _rows - 1;
+
+    
+    let s51_x: u16 = bar_sr4_x + 1;
+    let s51_y: u16 = bar_sr2_y + 1;
+
+    let s52_x: u16 = _cols - 1;
+    let s52_y: u16 = _rows - 1;
+
+    //                                      (SR1)
+    //                                        |
+    // +--------------------------------------+------------------+
+    // |s11                                   |s21               |
+    // |                                      |                  |
+    // |                                      |                  |
+    // |                                      |                  |
+    // |                                      |                  |
+    // |              Screen 1                |     Screen 2     |
+    // |                                      |                  |
+    // |                                      |                  |
+    // |                                      |                  |
+    // |                                      |                  |
+    // |                                      |                  |
+    // |                            .      s12|               s22|
+    // +----------+-----------------.-------+-+------------------+--(SR2)  
+    // |s31       |s41              .       |s51                 |
+    // |          |                 .       |                    |
+    // | Screen 3 |         Screen 4.       |      Screen 5      |
+    // |          |                 .       |                    |
+    // |       s32|                 .    s42|                 s52|
+    // +----------+-----------------.-------+--------------------+  
+    //            |                 .       |
+    //          (SR3)                     (SR4)
+
+    // Interface layer
+
+    if _cols < 20 || _rows < 10 {
+        println!("[{} x {}]\nToo small", _cols, _rows);
+        return;
+    }
+
+    match screen_1 {
+        Screen::Empty => (),
+        Screen::RenderLayer(screen_1_rl) => render_layer(
+            s11_x,
+            s11_y,
+            s12_x,
+            s12_y,
+            screen_1_rl
+        )
+    };
+
+    match screen_2 {
+        Screen::Empty => (),
+        Screen::RenderLayer(screen_2_rl) => render_layer(
+            s21_x,
+            s21_y,
+            s22_x,
+            s22_y,
+            screen_2_rl
+        )
+    };
+
+    match screen_3 {
+        Screen::Empty => (),
+        Screen::RenderLayer(screen_3_rl) => render_layer(
+            s31_x,
+            s31_y,
+            s32_x,
+            s32_y,
+            screen_3_rl
+        )
+    };
+
+    match screen_4 {
+        Screen::Empty => (),
+        Screen::RenderLayer(screen_4_rl) => render_layer(
+            s41_x,
+            s41_y,
+            s42_x,
+            s42_y,
+            screen_4_rl
+        )
+    };
+
+    match screen_5 {
+        Screen::Empty => (),
+        Screen::RenderLayer(screen_5_rl) => render_layer(
+            s51_x,
+            s51_y,
+            s52_x,
+            s52_y,
+            screen_5_rl
+        )
+    };
+
+    // Border layer
+
+
+
+    // Info layer
+
+    //if _cols >= 26 { mv_print_hello(_cols/2 - 12, _rows); }
 
 }

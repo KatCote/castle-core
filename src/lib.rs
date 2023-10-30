@@ -4,7 +4,7 @@
 //! Will pack with map (and same) editor base on CastleCore.
 
 // Public constants
-pub(crate) const CC_VER: &str = "v0.0.7";
+pub(crate) const CC_VER: &str = "v0.0.8";
 
 // Heavy lines for write borders
 pub(crate) const LU_CORNER: char = '┏';
@@ -15,9 +15,9 @@ pub(crate) const UD_LINE: char = '━';
 pub(crate) const LR_LINE: char = '┃';
 pub(crate) const UD_T: char = '┳';
 pub(crate) const DU_T: char = '┻';
-//pub(crate) const LR_T: char = '┣';
-//pub(crate) const RL_T: char = '┫';
-//pub(crate) const CROSS: char = '╋';
+pub(crate) const LR_T: char = '┣';
+pub(crate) const RL_T: char = '┫';
+pub(crate) const CROSS: char = '╋';
 
 // Double pack: ║ ═ ╔ ╗ ╚ ╝ ╠ ╣ ╦ ╩ ╬ 
 

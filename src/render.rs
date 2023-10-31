@@ -19,7 +19,8 @@ pub enum MapLayer {
     Color,
     Trigger,
     Wall,
-    SumObj(Summon)
+    SumObj(Summon),
+    Explore // bool (visible map for minimap)
 }
 
 /// Inventory Pages enum for RenderInterface
@@ -60,13 +61,14 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                                 Summon::Enemy => printch(i, j, &'$')
                             }   
                         }
+                        MapLayer::Explore => printch(i, j, &'E')
                     };
                 },
                 RenderInterface::MiniMap => { let _ = printch(i, j, &'3'); },
                 RenderInterface::InvPage(ref page) => {
                     match page {
-                        InvPage::Page1 => printch(i, j, &'E'),
-                        InvPage::Page2 => printch(i, j, &'F')
+                        InvPage::Page1 => printch(i, j, &'F'),
+                        InvPage::Page2 => printch(i, j, &'H')
                     };
                 },
                 RenderInterface::PlayerParams => { let _ = printch(i, j, &'5'); },

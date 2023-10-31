@@ -173,7 +173,7 @@ pub fn write_default_game_window(
     let s12_y: u16 = bar_sr2_y;
 
 
-    let s21_x: u16 = if split_ratio_1 == 0.0 {0} else if split_ratio_1 == 1.0 {bar_sr1_x + 1} else {bar_sr1_x + 1};
+    let s21_x: u16 = if split_ratio_1 == 0.0 {1} else if split_ratio_1 == 1.0 {bar_sr1_x + 1} else {bar_sr1_x + 1};
     let s21_y: u16 = 1;
 
     let s22_x: u16 = if split_ratio_1 == 1.0 {_cols} else {_cols - 1};
@@ -289,7 +289,7 @@ pub fn write_default_game_window(
 
     // Border layer
     
-    for col in 0.._cols {
+    /*for col in 0.._cols {
         for row in 0.._rows {
 
             if col == 0 && row == 0
@@ -337,7 +337,7 @@ pub fn write_default_game_window(
                 { printch(bar_sr1_x, bar_sr2_y, &CROSS); }
 
         }
-    }
+    }*/
     
     // Info layer
 

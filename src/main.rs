@@ -18,12 +18,12 @@ fn main() {
 
     write_default_game_window(
         Screen::RenderLayer(RenderInterface::Default),
-        Screen::RenderLayer(RenderInterface::Default),
-        Screen::RenderLayer(RenderInterface::Default),
-        Screen::RenderLayer(RenderInterface::Default),
-        Screen::RenderLayer(RenderInterface::Default),
-        0.7,
-        0.6,
+        Screen::RenderLayer(RenderInterface::InfoItem),
+        Screen::RenderLayer(RenderInterface::InfoWorld),
+        Screen::RenderLayer(RenderInterface::MapFull),
+        Screen::RenderLayer(RenderInterface::MiniMap),
+        1.0,
+        0.8,
         0.5,
         0.5);
 

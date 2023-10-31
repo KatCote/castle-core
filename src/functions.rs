@@ -7,7 +7,7 @@ use crossterm::{
 };
 
 /// Print char at current position 
-pub fn printch(x: u16, y: u16, symbol: &char){
+pub fn printch(x: u16, y: u16, symbol: &char) {
 
     let _ = execute!(
         stdout(),
@@ -45,7 +45,7 @@ pub fn print_hello() {
 }
 
 /// Print movable "Powered by CastleCore"
-pub fn mv_print_hello(x: u16, y: u16){ 
+pub fn mv_print_hello(x: u16, y: u16) { 
 
     set_color(Color::Black, Color::White);
     printmsg(x, y, " Powered by ");

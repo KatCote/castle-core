@@ -1,7 +1,7 @@
 [package]
 name = "castle-core"
 description = "CastleCore - Core engine for Altenstein (and same projects)"
-version = "0.0.8"
+version = "0.0.9"
 authors = ["KatCote"]
 edition = "2021"
 repository = "https://github.com/KatCote/castle-core"

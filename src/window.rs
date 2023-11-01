@@ -154,6 +154,12 @@ pub fn write_default_game_window(
     
     // Define layer
 
+    let split_ratio_1 = if split_ratio_1 < 0.0 {0.0} else if split_ratio_1 > 1.0 {1.0} else {split_ratio_1};
+    let split_ratio_2 = if split_ratio_2 < 0.0 {0.0} else if split_ratio_2 > 1.0 {1.0} else {split_ratio_2};
+    let split_ratio_3 = if split_ratio_3 < 0.0 {0.0} else if split_ratio_3 > 1.0 {1.0} else {split_ratio_3};
+    let split_ratio_4 = if split_ratio_4 < 0.0 {0.0} else if split_ratio_4 > 1.0 {1.0} else {split_ratio_4};
+
+
     let Ok((_cols, _rows)) = size() else { return; };
 
 
@@ -170,14 +176,14 @@ pub fn write_default_game_window(
     let s11_y: u16 = if split_ratio_1 == 0.0 {0} else {1};
 
     let s12_x: u16 = if split_ratio_1 == 0.0 {0} else if split_ratio_1 == 1.0 {bar_sr1_x + 1} else {bar_sr1_x};
-    let s12_y: u16 = bar_sr2_y;
+    let s12_y: u16 = if split_ratio_2 == 1.0 {bar_sr2_y+1} else {bar_sr2_y};
 
 
     let s21_x: u16 = if split_ratio_1 == 0.0 {1} else if split_ratio_1 == 1.0 {bar_sr1_x + 1} else {bar_sr1_x + 1};
     let s21_y: u16 = 1;
 
     let s22_x: u16 = if split_ratio_1 == 1.0 {_cols} else {_cols - 1};
-    let s22_y: u16 = bar_sr2_y;
+    let s22_y: u16 = if split_ratio_2 == 1.0 {bar_sr2_y+1} else {bar_sr2_y};
 
 
     let s31_x: u16 = 1;
@@ -190,7 +196,7 @@ pub fn write_default_game_window(
     let s41_x: u16 = bar_sr3_x + 1;
     let s41_y: u16 = bar_sr2_y + 1;
 
-    let s42_x: u16 = bar_sr4_x;
+    let s42_x: u16 = if split_ratio_4 == 1.0 {bar_sr4_x+1} else {bar_sr4_x};
     let s42_y: u16 = _rows - 1;
 
     
@@ -232,7 +238,7 @@ pub fn write_default_game_window(
         return;
     }
 
-    if split_ratio_1 != 0.0 { match screen_1 {
+    if split_ratio_1 > 0.02 { match screen_1 {
         Screen::Empty => (),
         Screen::RenderLayer(screen_1_rl) => render_layer(
             s11_x,
@@ -243,7 +249,7 @@ pub fn write_default_game_window(
         )
     }; }
 
-    if split_ratio_1 != 1.0 { match screen_2 {
+    if split_ratio_1 < 0.98 { match screen_2 {
         Screen::Empty => (),
         Screen::RenderLayer(screen_2_rl) => render_layer(
             s21_x,
@@ -289,7 +295,7 @@ pub fn write_default_game_window(
 
     // Border layer
     
-    /*for col in 0.._cols {
+    for col in 0.._cols {
         for row in 0.._rows {
 
             if col == 0 && row == 0
@@ -305,14 +311,16 @@ pub fn write_default_game_window(
             else if (col == 0 || col == (_cols-1)) && row != 0 && row != (_rows-1)
                 { printch(col, row, &LR_LINE); }
 
-            if split_ratio_1 != 0.0 && split_ratio_1 != 1.0 && row != 0 && row <= (bar_sr2_y-1)
+            if split_ratio_2 > 0.02 && split_ratio_1 != 0.0 && split_ratio_1 != 1.0 && row != 0 && row <= (bar_sr2_y-1)
                 { printch(bar_sr1_x, row, &LR_LINE); }
-            else if split_ratio_1 != 0.0 && split_ratio_1 != 1.0 && row == 0
+            else if split_ratio_2 > 0.02 && split_ratio_1 != 0.0 && split_ratio_1 != 1.0 && row == 0
                 { printch(bar_sr1_x, row, &UD_T); }
-            else if split_ratio_1 != 0.0 && split_ratio_1 != 1.0 && row <= bar_sr2_y
+            else if split_ratio_2 > 0.02 && split_ratio_1 != 0.0 && split_ratio_1 != 1.0 && split_ratio_2 < 0.98 && row <= bar_sr2_y
                 { printch(bar_sr1_x, row, &DU_T); }
+            else if split_ratio_2 >= 0.98 && split_ratio_1 > 0.0 && split_ratio_1 < 1.0
+                { printch(bar_sr1_x, _rows-2, &LR_LINE); printch(bar_sr1_x, _rows-1, &DU_T); }
 
-            if bar_sr2_y != 0 && bar_sr2_y != _rows && col != 0 && col != (_cols-1)
+            if split_ratio_2 < 0.98 && bar_sr2_y != 0 && bar_sr2_y != _rows && col != 0 && col != (_cols-1)
                 { printch(col, bar_sr2_y, &UD_LINE); }
             else if bar_sr2_y != 0 && bar_sr2_y != _rows && col == 0
                 { printch(col, bar_sr2_y, &LR_T); }
@@ -321,23 +329,23 @@ pub fn write_default_game_window(
 
             if bar_sr3_x != 0 && bar_sr3_x != _cols && row != (_rows-1) && row >= (bar_sr2_y+1)
                 { printch(bar_sr3_x, row, &LR_LINE); }
-            else if bar_sr3_x != 0 && bar_sr3_x != _cols && row == (bar_sr2_y)
+            else if bar_sr3_x != 0 && bar_sr3_x != _cols && split_ratio_2 < 0.98 && row == (bar_sr2_y)
                 { printch(bar_sr3_x, row, &UD_T); }
-            else if bar_sr3_x != 0 && bar_sr3_x != _cols && row == (_rows-1)
+            else if bar_sr3_x != 0 && bar_sr3_x != _cols && split_ratio_2 < 0.98 && row == (_rows-1)
                 { printch(bar_sr3_x, row, &DU_T); }
 
-            if bar_sr4_x != 0 && bar_sr4_x != _cols && row != (_rows-1) && row >= (bar_sr2_y+1)
+            if split_ratio_4 != 1.0 && bar_sr4_x != 0 && bar_sr4_x != _cols && row != (_rows-1) && row >= (bar_sr2_y+1)
                 { printch(bar_sr4_x, row, &LR_LINE); }
-            else if bar_sr4_x != 0 && bar_sr4_x != _cols && row == (bar_sr2_y)
+            else if split_ratio_4 != 1.0 && bar_sr4_x != 0 && bar_sr4_x != _cols && split_ratio_2 < 0.98 && row == (bar_sr2_y)
                 { printch(bar_sr4_x, row, &UD_T); }
-            else if bar_sr4_x != 0 && bar_sr4_x != _cols && row == (_rows-1)
+            else if split_ratio_4 != 1.0 && bar_sr4_x != 0 && bar_sr4_x != _cols && split_ratio_2 < 0.98 && row == (_rows-1)
                 { printch(bar_sr4_x, row, &DU_T); }
 
             if bar_sr1_x == bar_sr4_x && bar_sr1_x != 0 && bar_sr1_x != _cols
                 { printch(bar_sr1_x, bar_sr2_y, &CROSS); }
 
         }
-    }*/
+    }
     
     // Info layer
 

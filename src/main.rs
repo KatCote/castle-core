@@ -22,7 +22,7 @@ fn main() {
         Screen::RenderLayer(RenderInterface::InfoWorld),
         Screen::RenderLayer(RenderInterface::MapFull),
         Screen::RenderLayer(RenderInterface::MiniMap),
-        0.9,
+        0.8,
         0.8, // >0.02 && <0.0.98
         0.5,
         0.5);
@@ -30,4 +30,3 @@ fn main() {
     usescr();
     endscr();
 }
-

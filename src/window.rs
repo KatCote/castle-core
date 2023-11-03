@@ -233,7 +233,7 @@ pub fn write_default_game_window(
 
     // Interface layer
 
-    if _cols < 20 || _rows < 10 {
+    if _cols < 45 || _rows < 15 {
         println!("[{} x {}]\nToo small", _cols, _rows);
         return;
     }

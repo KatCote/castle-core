@@ -23,7 +23,7 @@ fn main() {
         Screen::RenderLayer(RenderInterface::MapFull),
         Screen::RenderLayer(RenderInterface::MiniMap),
         0.8,
-        0.8, // >0.02 && <0.0.98
+        0.97, // >0.02 && <0.098
         0.5,
         0.5);
 

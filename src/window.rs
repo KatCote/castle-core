@@ -9,7 +9,16 @@ pub enum Screen {
     RenderLayer(render::RenderInterface)
 }
 
+pub enum Window {
+    TopLeft,
+    TopRight,
+    DownLeft,
+    DownCentral,
+    DownRight
+}
+
 /// Border full window (actually without loot thread)
+/// Only dev window, not for users and release at all
 pub fn write_full_window(screen: Screen) {
 
     // Interface layer
@@ -56,6 +65,7 @@ pub fn write_full_window(screen: Screen) {
 }
 
 /// The border of the window that is split vertically (without loot thread now)
+/// Only dev window, not for users and release at all
 // TODO: make split_ratio changable after init window
 pub fn write_vertical_split_window(left_screen: Screen, right_screen: Screen, split_ratio: f32) {
     
@@ -155,7 +165,7 @@ pub fn write_default_game_window(
     // Define layer
 
     let split_ratio_1 = if split_ratio_1 < 0.0 {0.0} else if split_ratio_1 > 1.0 {1.0} else {split_ratio_1};
-    let split_ratio_2 = if split_ratio_2 < 0.0 {0.0} else if split_ratio_2 > 1.0 {1.0} else {split_ratio_2};
+    let split_ratio_2 = if split_ratio_2 < 0.0 {0.0} else if split_ratio_2 > 0.97 {1.0} else {split_ratio_2};
     let split_ratio_3 = if split_ratio_3 < 0.0 {0.0} else if split_ratio_3 > 1.0 {1.0} else {split_ratio_3};
     let split_ratio_4 = if split_ratio_4 < 0.0 {0.0} else if split_ratio_4 > 1.0 {1.0} else {split_ratio_4};
 

@@ -1,3 +1,8 @@
+use std::fs::File;
+use std::io::Read;
+
+use crossterm::style::Print;
+
 use crate::functions::*;
 
 /// Enum for use in match in functions as param
@@ -49,9 +54,9 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                 RenderInterface::MapFull => { let _ = printch(i, j, &'1'); },
                 RenderInterface::MapLayer(ref ml) => {  
                     match ml {
-                        MapLayer::Base => printch(i, j, &'A'),
+                        MapLayer::Base => render_map_layer(x1, y1, x2, y2, MapLayer::Base),
                         MapLayer::Color => printch(i, j, &'B'),
-                        MapLayer::Trigger => printch(i, j, &'C'),
+                        MapLayer::Trigger => render_map_layer(x1, y1, x2, y2, MapLayer::Trigger),
                         MapLayer::Wall => printch(i, j, &'D'),
                         MapLayer::SumObj(ref object) => {
                             match object {
@@ -77,4 +82,45 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
             };
         }
     }
+}
+
+pub fn render_map_layer(x1: u16, y1: u16, x2: u16, y2: u16, map: MapLayer) {
+
+    let mut map_path: String = String::from("maps/default.map");
+
+    match map {
+        MapLayer::Base => map_path = String::from("maps/base.map"),
+        MapLayer::Color => map_path = String::from("maps/color.map"),
+        MapLayer::Trigger => map_path = String::from("maps/trigger.map"),
+        MapLayer::Wall => map_path = String::from("maps/wall.map"),
+        MapLayer::SumObj(ref object) => {
+            match object {
+                Summon::Static => map_path = String::from("maps/summon/static.map"),
+                Summon::Dynamic => map_path = String::from("maps/summon/dynamic.map"),
+                Summon::NPC => map_path = String::from("maps/summon/npc.map"),
+                Summon::Enemy => map_path = String::from("maps/summon/enemy.map")
+            }   
+        }
+        MapLayer::Explore => map_path = String::from("maps/explore.map")
+    }
+
+    let map_path_to_file = File::open(&map_path);
+
+    let mut map_file = match map_path_to_file {
+        Ok(mfile) => mfile,
+        Err(error) => match error.kind() {
+            std::io::ErrorKind::NotFound => match File::create(&map_path) {
+                Ok(fc) => fc,
+                Err(e) => panic!("Problem creating the file: {:?}", e)
+            },
+            other_error => { panic!("Problem opening the file: {:?}", other_error); }
+        }
+    };
+
+    let mut map_contents = String::new();
+
+    map_file.read_to_string(&mut map_contents).unwrap();
+
+    printmsg(x1, y1, &map_contents);
+
 }

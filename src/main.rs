@@ -8,20 +8,12 @@ use crate::window::*;
 fn main() { 
     initscr();
 
-    //let _ = write_full_window(Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::SumObj(Summon::NPC))));
-
-    /*write_vertical_split_window(
-        Screen::RenderLayer(RenderInterface::Default), 
-        Screen::RenderLayer(RenderInterface::MapFull),
-        0.17
-    );*/
-
     write_default_game_window(
-        Screen::RenderLayer(RenderInterface::Default),
-        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Trigger)),
-        Screen::RenderLayer(RenderInterface::InfoWorld),
         Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Base)),
-        Screen::RenderLayer(RenderInterface::MiniMap),
+        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Color)),
+        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Trigger)),
+        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Wall)),
+        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Explore)),
         0.4,
         0.97, // >0.02 && <0.098
         0.5,

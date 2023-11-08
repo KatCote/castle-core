@@ -1,8 +1,7 @@
 use std::fs::File;
-use std::io::Read;
+use std::io::{BufReader, BufRead};
 
-use crossterm::style::Print;
-
+use crate::core::load_map;
 use crate::functions::*;
 
 /// Enum for use in match in functions as param
@@ -54,10 +53,10 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                 RenderInterface::MapFull => { let _ = printch(i, j, &'1'); },
                 RenderInterface::MapLayer(ref ml) => {  
                     match ml {
-                        MapLayer::Base => render_map_layer(x1, y1, x2, y2, MapLayer::Base),
-                        MapLayer::Color => printch(i, j, &'B'),
-                        MapLayer::Trigger => render_map_layer(x1, y1, x2, y2, MapLayer::Trigger),
-                        MapLayer::Wall => printch(i, j, &'D'),
+                        MapLayer::Base => { render_map_layer(x1, y1, x2, y2, MapLayer::Base, 10, 5); break; },
+                        MapLayer::Color => { render_map_layer(x1, y1, x2, y2, MapLayer::Color, 0, 0); break; },
+                        MapLayer::Trigger => { render_map_layer(x1, y1, x2, y2, MapLayer::Trigger, 0, 0); break; },
+                        MapLayer::Wall => { render_map_layer(x1, y1, x2, y2, MapLayer::Wall, 0, 0); break; },
                         MapLayer::SumObj(ref object) => {
                             match object {
                                 Summon::Static => printch(i, j, &'!'),
@@ -66,7 +65,7 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                                 Summon::Enemy => printch(i, j, &'$')
                             }   
                         }
-                        MapLayer::Explore => printch(i, j, &'E')
+                        MapLayer::Explore => { render_map_layer(x1, y1, x2, y2, MapLayer::Explore, 0, 0); break; }
                     };
                 },
                 RenderInterface::MiniMap => { let _ = printch(i, j, &'3'); },
@@ -84,43 +83,24 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
     }
 }
 
-pub fn render_map_layer(x1: u16, y1: u16, x2: u16, y2: u16, map: MapLayer) {
+pub fn render_map_layer(x1: u16, y1: u16, x2: u16, y2: u16, map: MapLayer, x_offset: i16, y_offset: i16) {
 
-    let mut map_path: String = String::from("maps/default.map");
+    let loaded_map_pack = load_map(map);    // Need to move to loop (for 1 (or same) call load_map function)
+                                                                        //       |
+    let loaded_map: Vec<String> = loaded_map_pack.0;                   // ------+
+    let loaded_info: (u16, u16) = loaded_map_pack.1;                    // ------+
 
-    match map {
-        MapLayer::Base => map_path = String::from("maps/base.map"),
-        MapLayer::Color => map_path = String::from("maps/color.map"),
-        MapLayer::Trigger => map_path = String::from("maps/trigger.map"),
-        MapLayer::Wall => map_path = String::from("maps/wall.map"),
-        MapLayer::SumObj(ref object) => {
-            match object {
-                Summon::Static => map_path = String::from("maps/summon/static.map"),
-                Summon::Dynamic => map_path = String::from("maps/summon/dynamic.map"),
-                Summon::NPC => map_path = String::from("maps/summon/npc.map"),
-                Summon::Enemy => map_path = String::from("maps/summon/enemy.map")
-            }   
-        }
-        MapLayer::Explore => map_path = String::from("maps/explore.map")
-    }
+    //let map_x_border = if x2-x1 < line.len() as u16 {x2-x1} else {line.len() as u16};
+    //let map_y = if y1+line_num <= y2 {y1+line_num} else {/*break*/};
 
-    let map_path_to_file = File::open(&map_path);
+    //printmsg(x1, map_y, &line.as_str()[..map_x_border as usize]);
 
-    let mut map_file = match map_path_to_file {
-        Ok(mfile) => mfile,
-        Err(error) => match error.kind() {
-            std::io::ErrorKind::NotFound => match File::create(&map_path) {
-                Ok(fc) => fc,
-                Err(e) => panic!("Problem creating the file: {:?}", e)
-            },
-            other_error => { panic!("Problem opening the file: {:?}", other_error); }
-        }
-    };
+    printmsg(x1, y1, &("x1: ".to_owned() + x1.to_string().as_str()));
+    printmsg(x1, y1+1, &("x2: ".to_owned() + x2.to_string().as_str()));
+    
+    printmsg(x1, y1+3, &("loaded_vector: ".to_owned() + loaded_map.len().to_string().as_str()));
 
-    let mut map_contents = String::new();
-
-    map_file.read_to_string(&mut map_contents).unwrap();
-
-    printmsg(x1, y1, &map_contents);
-
+    printmsg(x1, y1+5, &("loaded_info_0: ".to_owned() + loaded_info.0.to_string().as_str()));
+    printmsg(x1, y1+6, &("loaded_info_1: ".to_owned() + loaded_info.1.to_string().as_str()));
+    
 }

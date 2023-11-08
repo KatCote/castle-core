@@ -29,6 +29,8 @@ pub mod window;
 pub mod screen;
 /// A module containing all the functions related to the render (temporary description)
 pub mod render;
+/// A module containing all the core functions (temporary description)
+pub mod core;
 
 /// Return current CastleCore version
 pub fn cc_ver() -> &'static str {

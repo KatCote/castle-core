@@ -151,6 +151,7 @@ pub fn write_vertical_split_window(left_screen: Screen, right_screen: Screen, sp
 
 }
 
+/// Default (user usable) interface from Altenstein and same Text RPG games
 pub fn write_default_game_window(
     screen_1: Screen,
     screen_2: Screen,
@@ -359,6 +360,6 @@ pub fn write_default_game_window(
     
     // Info layer
 
-    //if _cols >= 26 { mv_print_hello(_cols/2 - 12, _rows); }
+    //if _cols >= 26 { mv_print_hello(1, 0); }
 
 }

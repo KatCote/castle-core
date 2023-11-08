@@ -1,8 +1,9 @@
-use std::{fs::File, io::{BufReader, BufRead}};
+use std::{fs::{File, self}, io::{BufReader, BufRead}};
 
 use crate::render::{self, *};
 
-pub fn load_map(map: render::MapLayer) -> (Vec<String>, (u16, u16)) {
+/// Load map (return this map, then use this not at loop!)
+pub fn load_map(map: render::MapLayer) -> Vec<String> {
     let mut map_path: String = String::from("maps/default.cc_map");
 
     match map {
@@ -39,28 +40,30 @@ pub fn load_map(map: render::MapLayer) -> (Vec<String>, (u16, u16)) {
 
     let mut loaded_map: Vec<String> = Vec::new();
 
-    let mut loaded_info: (u16, u16) = (1, 1); // 1 - X; 2 - Y; 3 - Need to remember :P
-
     let mut line_num = 1;
 
     for line in reader.lines() {
 
         match line {
-            Ok(line) => {
-
-                //loaded_map[line_num as usize] = line.as_str();
-                
-                loaded_info.0 = line_num;
-                loaded_info.1 = if loaded_info.1 > (&line).len() as u16 {loaded_info.1} else {line.len() as u16};
-
-                loaded_map.push(line);
-            }
+            Ok(line) => loaded_map.push(line),
             Err(_) => break
         }
 
         line_num = line_num + 1;
     };
 
-    return (loaded_map, loaded_info);
+    return loaded_map;
 
+}
+
+/// Create all dirs for correct engine work
+pub fn initpath() {
+    match fs::create_dir("maps") {
+        Err(why) => println!("Problem create dir {:?}", why.kind()),
+        Ok(_) => {},
+    }
+    match fs::create_dir("maps/summon") {
+        Err(why) => println!("Problem create dir {:?}", why.kind()),
+        Ok(_) => {},
+    }
 }

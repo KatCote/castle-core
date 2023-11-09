@@ -8,12 +8,12 @@ use crossterm::{
 
 /// Init screen (base for next engine).
 /// Input: true - enable loop, false - only init screen.
-pub fn initscr() {
+pub fn initscr(title: &str, ver: bool) {
 
-    let title: &str = &("CastleCore ".to_owned() + &crate::CC_VER);
+    let set_title: &str = &(title.to_owned() + if ver == true {&crate::CC_VER} else {""});
 
     let _ = execute!(stdout(), EnterAlternateScreen, Hide); 
-    let _ = execute!(stdout(), SetTitle(title));
+    let _ = execute!(stdout(), SetTitle(set_title));
 }
 
 /// Screen usability (will be rewrited soon) after initscr.

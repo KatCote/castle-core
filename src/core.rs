@@ -4,22 +4,22 @@ use crate::render::{self, *};
 
 /// Load map (return this map, then use this not at loop!)
 pub fn load_map(map: render::MapLayer) -> Vec<String> {
-    let mut map_path: String = String::from("maps/default.cc_map");
+    let mut map_path: String = String::from("map/default.cc_map");
 
     match map {
-        MapLayer::Base => map_path = String::from("maps/base.cc_map"),
-        MapLayer::Color => map_path = String::from("maps/color.cc_map"),
-        MapLayer::Trigger => map_path = String::from("maps/trigger.cc_map"),
-        MapLayer::Wall => map_path = String::from("maps/wall.cc_map"),
+        MapLayer::Base => map_path = String::from("map/base.cc_map"),
+        MapLayer::Color => map_path = String::from("map/color.cc_map"),
+        MapLayer::Trigger => map_path = String::from("map/trigger.cc_map"),
+        MapLayer::Wall => map_path = String::from("map/wall.cc_map"),
         MapLayer::SumObj(ref object) => {
             match object {
-                Summon::Static => map_path = String::from("maps/summon/static.cc_map"),
-                Summon::Dynamic => map_path = String::from("maps/summon/dynamic.cc_map"),
-                Summon::NPC => map_path = String::from("maps/summon/npc.cc_map"),
-                Summon::Enemy => map_path = String::from("maps/summon/enemy.cc_map")
+                Summon::Static => map_path = String::from("map/summon/static.cc_map"),
+                Summon::Dynamic => map_path = String::from("map/summon/dynamic.cc_map"),
+                Summon::NPC => map_path = String::from("map/summon/npc.cc_map"),
+                Summon::Enemy => map_path = String::from("map/summon/enemy.cc_map")
             }   
         }
-        MapLayer::Explore => map_path = String::from("maps/explore.cc_map")
+        MapLayer::Explore => map_path = String::from("map/explore.cc_map")
     }
 
     let map_path_to_file = File::open(&map_path);
@@ -58,12 +58,18 @@ pub fn load_map(map: render::MapLayer) -> Vec<String> {
 
 /// Create all dirs for correct engine work
 pub fn initpath() {
-    match fs::create_dir("maps") {
-        Err(why) => println!("Problem create dir {:?}", why.kind()),
+    match fs::create_dir("map") {
+        Err(error) => match error.kind() {
+            std::io::ErrorKind::AlreadyExists => {},
+            e => panic!("Problem create dir {:?}", e)
+        },
         Ok(_) => {},
     }
-    match fs::create_dir("maps/summon") {
-        Err(why) => println!("Problem create dir {:?}", why.kind()),
+    match fs::create_dir("map/summon") {
+        Err(error) => match error.kind() {
+            std::io::ErrorKind::AlreadyExists => {},
+            e => panic!("Problem create dir {:?}", e)
+        },
         Ok(_) => {},
     }
 }

@@ -9,7 +9,7 @@ use crate::window::*;
 fn main() { 
 
     initpath();
-    initscr();
+    initscr("CastleCore", true);
 
     write_default_game_window(
         Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Base)),

@@ -1,6 +1,3 @@
-use std::fs::File;
-use std::io::{BufReader, BufRead};
-
 use crate::core::load_map;
 use crate::functions::*;
 
@@ -54,7 +51,7 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
                 RenderInterface::MapLayer(ref ml) => {  
                     match ml {
                         MapLayer::Base => { render_map_layer(x1, y1, x2, y2, MapLayer::Base, 0, 0); break; },
-                        MapLayer::Color => { render_map_layer(x1, y1, x2, y2, MapLayer::Color, 0, 0); break; },
+                        MapLayer::Color => { render_map_layer(x1, y1, x2, y2, MapLayer::Color, 2, 5); break; },
                         MapLayer::Trigger => { render_map_layer(x1, y1, x2, y2, MapLayer::Trigger, 0, 0); break; },
                         MapLayer::Wall => { render_map_layer(x1, y1, x2, y2, MapLayer::Wall, 0, 0); break; },
                         MapLayer::SumObj(ref object) => {

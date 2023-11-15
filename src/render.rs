@@ -1,16 +1,18 @@
+use std::ops::Index;
+
 use crate::core::load_map;
 use crate::functions::*;
 
 /// Enum for use in match in functions as param
 pub enum RenderInterface {
-    Default,
-    MapFull,
-    MapLayer(MapLayer),
-    MiniMap,
-    InvPage(InvPage),
-    PlayerParams,
-    InfoWorld,
-    InfoItem
+    Default, // Plug                                (Dev)
+    MapFull, // Regular                             (User)
+    MapLayer(MapLayer), // Onlu for development     (Dev)
+    MiniMap, // Non-regular                         (User)
+    InvPage(InvPage), // Regular                    (User)
+    PlayerParams, // Regular                        (User)
+    InfoWorld, // Regular                           (User)
+    InfoItem // Regular                             (User)
 }
 
 /// Map layers enum for RenderInterface
@@ -42,41 +44,84 @@ pub enum Summon {
 
 /// Render selected layer on current ractangle
 pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) {
+    let j = 1;
+    let i = 1;
 
-    for i in x1..x2 {
-        for j in y1..y2 {
-            match layer {
-                RenderInterface::Default => { let _ = printch(i, j, &'.'); },
-                RenderInterface::MapFull => { let _ = printch(i, j, &'1'); },
-                RenderInterface::MapLayer(ref ml) => {  
-                    match ml {
-                        MapLayer::Base => { render_map_layer(x1, y1, x2, y2, MapLayer::Base, 0, 0); break; },
-                        MapLayer::Color => { render_map_layer(x1, y1, x2, y2, MapLayer::Color, 2, 5); break; },
-                        MapLayer::Trigger => { render_map_layer(x1, y1, x2, y2, MapLayer::Trigger, 0, 0); break; },
-                        MapLayer::Wall => { render_map_layer(x1, y1, x2, y2, MapLayer::Wall, 0, 0); break; },
-                        MapLayer::SumObj(ref object) => {
-                            match object {
-                                Summon::Static => printch(i, j, &'!'),
-                                Summon::Dynamic => printch(i, j, &'@'),
-                                Summon::NPC => printch(i, j, &'#'),
-                                Summon::Enemy => printch(i, j, &'$')
-                            }   
-                        }
-                        MapLayer::Explore => { render_map_layer(x1, y1, x2, y2, MapLayer::Explore, 0, 0); break; }
-                    };
-                },
-                RenderInterface::MiniMap => { let _ = printch(i, j, &'3'); },
-                RenderInterface::InvPage(ref page) => {
-                    match page {
-                        InvPage::Page1 => printch(i, j, &'F'),
-                        InvPage::Page2 => printch(i, j, &'H')
-                    };
-                },
-                RenderInterface::PlayerParams => { let _ = printch(i, j, &'5'); },
-                RenderInterface::InfoWorld => { let _ = printch(i, j, &'6'); },
-                RenderInterface::InfoItem => { let _ = printch(i, j, &'7'); }
+    match layer {
+        RenderInterface::Default => { let _ = printch(i, j, &'.'); },
+        RenderInterface::MapFull => { render_full_map(x1, y1, x2, y2, 0, 0); },
+        RenderInterface::MapLayer(ref ml) => {  
+            match ml {
+                MapLayer::Base => { render_map_layer(x1, y1, x2, y2, MapLayer::Base, 0, 0); },
+                MapLayer::Color => { render_map_layer(x1, y1, x2, y2, MapLayer::Color, 0, 0); },
+                MapLayer::Trigger => { render_map_layer(x1, y1, x2, y2, MapLayer::Trigger, 0, 0); },
+                MapLayer::Wall => { render_map_layer(x1, y1, x2, y2, MapLayer::Wall, 0, 0); },
+                MapLayer::SumObj(ref object) => {
+                    match object {
+                        Summon::Static => printch(i, j, &'!'),
+                        Summon::Dynamic => printch(i, j, &'@'),
+                        Summon::NPC => printch(i, j, &'#'),
+                        Summon::Enemy => printch(i, j, &'$')
+                    }   
+                }
+                MapLayer::Explore => { render_map_layer(x1, y1, x2, y2, MapLayer::Explore, 0, 0); }
             };
+        },
+        RenderInterface::MiniMap => { let _ = printch(i, j, &'3'); },
+        RenderInterface::InvPage(ref page) => {
+            match page {
+                InvPage::Page1 => printch(i, j, &'F'),
+                InvPage::Page2 => printch(i, j, &'H')
+            };
+        },
+        RenderInterface::PlayerParams => { let _ = printch(i, j, &'5'); },
+        RenderInterface::InfoWorld => { let _ = printch(i, j, &'6'); },
+        RenderInterface::InfoItem => { let _ = printch(i, j, &'7'); }
+    };
+}
+
+pub fn render_full_map(x1: u16, y1: u16, x2: u16, y2: u16, x_offset: u16, y_offset: u16) {
+    let loaded_base = load_map(MapLayer::Base);
+    let loaded_color = load_map(MapLayer::Color);
+
+    let mut base_row_counter = 1;
+
+    for base_row in &loaded_base {
+
+        let mut base_col_counter = 1;
+        let temp_index_row = base_row_counter; // IDK
+
+        let color_row = match loaded_color.get(temp_index_row-1) { // NEED TO REWRITE // TODO
+            Some(some_string) => some_string,
+            None => ""
+        };
+
+        let color_chars_vec: Vec<char> = color_row.chars().collect();
+        let base_chars_vec: Vec<char> = base_row.chars().collect();
+        
+        for base_char in base_chars_vec {
+
+            let temp_index_col = base_col_counter; // IDK
+
+            let color_char = match color_chars_vec.get(temp_index_col-1) {
+                Some(some_char) => some_char,
+                None => &' '
+            };
+
+            match color_char {
+                '0' => set_color(crossterm::style::Color::DarkRed, crossterm::style::Color::Cyan),
+                _ => ()
+            }
+            
+            //printch(base_col_counter as u16, base_row_counter as u16, &base_char);
+            printch(base_col_counter as u16, base_row_counter as u16, &base_char);
+
+            reset_color();
+
+            base_col_counter = base_col_counter + 1;
         }
+
+        base_row_counter = base_row_counter + 1;
     }
 }
 

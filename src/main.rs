@@ -9,10 +9,10 @@ use crate::window::*;
 fn main() { 
 
     initpath();
-    initscr("CastleCore", true);
+    initscr("CastleCore ", true);
 
     write_default_game_window(
-        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Base)),
+        Screen::RenderLayer(RenderInterface::MapFull),
         Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Color)),
         Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Trigger)),
         Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Wall)),

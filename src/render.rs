@@ -1,4 +1,4 @@
-use std::ops::Index;
+use crossterm::style::Color::Rgb;
 
 use crate::core::load_map;
 use crate::functions::*;
@@ -109,7 +109,7 @@ pub fn render_full_map(x1: u16, y1: u16, x2: u16, y2: u16, x_offset: u16, y_offs
             };
 
             match color_char {
-                '0' => set_color(crossterm::style::Color::DarkRed, crossterm::style::Color::Cyan),
+                '.' => set_color(Rgb { r: 150, g: 150, b: 150 }, Rgb { r: 179, g: 255, b: 94 }),
                 _ => ()
             }
             
@@ -118,10 +118,10 @@ pub fn render_full_map(x1: u16, y1: u16, x2: u16, y2: u16, x_offset: u16, y_offs
 
             reset_color();
 
-            base_col_counter = base_col_counter + 1;
+            if base_col_counter >= x2 as usize - 1 { break; } else { base_col_counter = base_col_counter + 1; }
         }
 
-        base_row_counter = base_row_counter + 1;
+        if base_row_counter >= y2 as usize - 1 { break; } else { base_row_counter = base_row_counter + 1; } 
     }
 }
 
@@ -141,18 +141,18 @@ pub fn render_map_layer(x1: u16, y1: u16, x2: u16, y2: u16, map: MapLayer, x_off
         let mut row_counter = 0;
         let mut y_offset_counter = 0;
 
-    for map_row in &loaded_map {
+        for map_row in &loaded_map {
 
-        if y_offset_counter >= y_offset && row_counter <= y2-y1-1 {
-            
-        let end_x: u16 = if x2-x1+x_offset < map_row.len() as u16 {x2-x1+x_offset} else {map_row.len() as u16};
-        let end_y: u16 = if y1 + row_counter <= y2 {y1+row_counter} else {y2};
-        printmsg(x1-x_offset, end_y, &map_row[x_offset as usize..end_x as usize]);
+            if y_offset_counter >= y_offset && row_counter <= y2-y1-1 {
+                
+                let end_x: u16 = if x2-x1+x_offset < map_row.len() as u16 {x2-x1+x_offset} else {map_row.len() as u16};
+                let end_y: u16 = if y1 + row_counter <= y2 {y1+row_counter} else {y2};
+                printmsg(x1-x_offset, end_y, &map_row[x_offset as usize..end_x as usize]);
 
-        row_counter = row_counter + 1;
+                row_counter = row_counter + 1;
 
-        } else { y_offset_counter = y_offset_counter + 1; }
-    }
+            } else { y_offset_counter = y_offset_counter + 1; }
+        }
 
     }
 

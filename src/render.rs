@@ -49,7 +49,7 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
 
     match layer {
         RenderInterface::Default => { let _ = printch(i, j, &'.'); },
-        RenderInterface::MapFull => { render_full_map(x1, y1, x2, y2, 0, 0); },
+        RenderInterface::MapFull => { render_full_map(x1, y1, x2, y2, 80, 60); }, // 80, 80 
         RenderInterface::MapLayer(ref ml) => {  
             match ml {
                 MapLayer::Base => { render_map_layer(x1, y1, x2, y2, MapLayer::Base, 0, 0); },
@@ -84,14 +84,19 @@ pub fn render_full_map(x1: u16, y1: u16, x2: u16, y2: u16, x_offset: u16, y_offs
     let loaded_base = load_map(MapLayer::Base);
     let loaded_color = load_map(MapLayer::Color);
 
+    let mut x_offset_counter: u16 = 0;
+    let mut y_offset_counter: u16 = 0;
+
     let mut base_row_counter = 1;
 
     for base_row in &loaded_base {
 
+        if y_offset_counter < y_offset { y_offset_counter = y_offset_counter + 1; continue; }
+
         let mut base_col_counter = 1;
         let temp_index_row = base_row_counter; // IDK
 
-        let color_row = match loaded_color.get(temp_index_row-1) { // NEED TO REWRITE // TODO
+        let color_row = match loaded_color.get(temp_index_row - 1 + y_offset_counter as usize) { // NEED TO REWRITE // TODO
             Some(some_string) => some_string,
             None => ""
         };
@@ -101,25 +106,33 @@ pub fn render_full_map(x1: u16, y1: u16, x2: u16, y2: u16, x_offset: u16, y_offs
         
         for base_char in base_chars_vec {
 
+            if x_offset_counter < x_offset { x_offset_counter = x_offset_counter + 1; continue; }
+
             let temp_index_col = base_col_counter; // IDK
 
-            let color_char = match color_chars_vec.get(temp_index_col-1) {
+            let color_char = match color_chars_vec.get(temp_index_col - 1 + x_offset as usize) {
                 Some(some_char) => some_char,
                 None => &' '
             };
 
-            match color_char {
-                '.' => set_color(Rgb { r: 150, g: 150, b: 150 }, Rgb { r: 179, g: 255, b: 94 }),
+            match color_char { // Need to rewrite with any map types
+                '.' => set_color(Rgb { r: 0, g: 119, b: 16 }, Rgb { r: 179, g: 255, b: 94 }),
+                '#' => set_color(Rgb { r: 108, g: 174, b: 0 }, Rgb { r: 153, g: 90, b: 0 }),
+                ',' => set_color(Rgb { r: 85, g: 56, b: 0 }, Rgb { r: 108, g: 174, b: 0 }),
+                'H' => set_color(Rgb { r: 168, g: 168, b: 168 }, Rgb { r: 156, g: 66, b: 0 }),
+                '=' => set_color(Rgb { r: 150, g: 107, b: 76 }, Rgb { r: 56, g: 24, b: 0 }),
                 _ => ()
             }
             
             //printch(base_col_counter as u16, base_row_counter as u16, &base_char);
-            printch(base_col_counter as u16, base_row_counter as u16, &base_char);
+            printch(base_col_counter as u16 + x1 - 1, base_row_counter as u16 + y1 - 1, &base_char);
 
             reset_color();
 
             if base_col_counter >= x2 as usize - 1 { break; } else { base_col_counter = base_col_counter + 1; }
         }
+
+        x_offset_counter = 0;
 
         if base_row_counter >= y2 as usize - 1 { break; } else { base_row_counter = base_row_counter + 1; } 
     }

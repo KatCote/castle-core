@@ -132,12 +132,12 @@ pub fn render_full_map(x1: u16, y1: u16, x2: u16, y2: u16, x_offset: u16, y_offs
 
             reset_color();
 
-            if base_col_counter >= x2 as usize - 1 { break; } else { base_col_counter = base_col_counter + 1; }
+            if base_col_counter + 1 >= x2 as usize { break; } else { base_col_counter = base_col_counter + 1; }
         }
 
         x_offset_counter = 0;
 
-        if base_row_counter >= y2 as usize /* - 1 (Removed, need to backup) */ { break; } else { base_row_counter = base_row_counter + 1; } 
+        if base_row_counter + 1 >= y2 as usize { break; } else { base_row_counter = base_row_counter + 1; } 
     }
 }
 

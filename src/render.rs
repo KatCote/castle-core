@@ -47,13 +47,16 @@ pub fn render_layer(x1: u16, y1: u16, x2: u16, y2: u16, layer: RenderInterface) 
     let j = 1;
     let i = 1;
 
+    let test_offset_x = 90;
+    let test_offset_y = 60;
+
     match layer {
         RenderInterface::Default => { let _ = printch(i, j, &'.'); },
-        RenderInterface::MapFull => { render_full_map(x1, y1, x2, y2, 80, 60); }, // 80, 80 
+        RenderInterface::MapFull => { render_full_map(x1, y1, x2, y2, test_offset_x, test_offset_y); }, // 80, 60 
         RenderInterface::MapLayer(ref ml) => {  
             match ml {
-                MapLayer::Base => { render_map_layer(x1, y1, x2, y2, MapLayer::Base, 0, 0); },
-                MapLayer::Color => { render_map_layer(x1, y1, x2, y2, MapLayer::Color, 0, 0); },
+                MapLayer::Base => { render_map_layer(x1, y1, x2, y2, MapLayer::Base, test_offset_x, test_offset_y); },
+                MapLayer::Color => { render_map_layer(x1, y1, x2, y2, MapLayer::Color, test_offset_x, test_offset_y); },
                 MapLayer::Trigger => { render_map_layer(x1, y1, x2, y2, MapLayer::Trigger, 0, 0); },
                 MapLayer::Wall => { render_map_layer(x1, y1, x2, y2, MapLayer::Wall, 0, 0); },
                 MapLayer::SumObj(ref object) => {
@@ -116,11 +119,11 @@ pub fn render_full_map(x1: u16, y1: u16, x2: u16, y2: u16, x_offset: u16, y_offs
             };
 
             match color_char { // Need to rewrite with any map types
-                '.' => set_color(Rgb { r: 0, g: 119, b: 16 }, Rgb { r: 179, g: 255, b: 94 }),
-                '#' => set_color(Rgb { r: 108, g: 174, b: 0 }, Rgb { r: 153, g: 90, b: 0 }),
-                ',' => set_color(Rgb { r: 85, g: 56, b: 0 }, Rgb { r: 108, g: 174, b: 0 }),
-                'H' => set_color(Rgb { r: 168, g: 168, b: 168 }, Rgb { r: 156, g: 66, b: 0 }),
-                '=' => set_color(Rgb { r: 150, g: 107, b: 76 }, Rgb { r: 56, g: 24, b: 0 }),
+                '.' => set_color(Rgb { r: 71, g: 107, b: 0 }, Rgb { r: 50, g: 92, b: 12 }),
+                '#' => set_color(Rgb { r: 96, g: 60, b: 0 }, Rgb { r: 87, g: 92, b: 0 }),
+                ',' => set_color(Rgb { r: 85, g: 56, b: 0 }, Rgb { r: 60, g: 90, b: 0 }),
+                'H' => set_color(Rgb { r: 71, g: 44, b: 0 }, Rgb { r: 54, g: 33, b: 0 }),
+                '=' => set_color(Rgb { r: 150, g: 107, b: 76 }, Rgb { r: 92, g: 61, b: 12 }),
                 _ => ()
             }
             
@@ -134,7 +137,7 @@ pub fn render_full_map(x1: u16, y1: u16, x2: u16, y2: u16, x_offset: u16, y_offs
 
         x_offset_counter = 0;
 
-        if base_row_counter >= y2 as usize - 1 { break; } else { base_row_counter = base_row_counter + 1; } 
+        if base_row_counter >= y2 as usize /* - 1 (Removed, need to backup) */ { break; } else { base_row_counter = base_row_counter + 1; } 
     }
 }
 
@@ -156,7 +159,11 @@ pub fn render_map_layer(x1: u16, y1: u16, x2: u16, y2: u16, map: MapLayer, x_off
 
         for map_row in &loaded_map {
 
+            let y2 = if y2 < y1 + 1 {y1+1} else {y2}; // need to remove
+
             if y_offset_counter >= y_offset && row_counter <= y2-y1-1 {
+                
+                let x2 = if x2 < x1 {x1} else {x2}; // need to remove
                 
                 let end_x: u16 = if x2-x1+x_offset < map_row.len() as u16 {x2-x1+x_offset} else {map_row.len() as u16};
                 let end_y: u16 = if y1 + row_counter <= y2 {y1+row_counter} else {y2};

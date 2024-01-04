@@ -41,9 +41,13 @@ fn spr_1_wout() {
 
 #[test]
 fn spr_2_full() {
-    initscr("spr_2_f_wout ", false);
+    initscr("spr_2_full_test ", false);
     write_default_game_window(
-        Screen::RenderLayer(RenderInterface::MapFull), Screen::RenderLayer(RenderInterface::MapFull), Screen::RenderLayer(RenderInterface::MapFull), Screen::RenderLayer(RenderInterface::MapFull), Screen::RenderLayer(RenderInterface::MapFull),
+        Screen::RenderLayer(RenderInterface::MapFull),
+        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Color)),
+        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Trigger)),
+        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Wall)),
+        Screen::RenderLayer(RenderInterface::MapLayer(MapLayer::Explore)),
         0.5,
         1.0,
         0.5,
@@ -53,7 +57,7 @@ fn spr_2_full() {
 }
 
 #[test]
-fn spr_2_wout() {
+fn spr_2_wout() { // TODO: NEED TO FIX
     initscr("spr_2_wout_test ", false);
     write_default_game_window(
         Screen::RenderLayer(RenderInterface::MapFull),

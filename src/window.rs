@@ -271,7 +271,7 @@ pub fn write_default_game_window(
         )
     }; }
 
-    match screen_3 {
+    if split_ratio_2 < 1.0 { match screen_3 {
         Screen::Empty => (),
         Screen::RenderLayer(screen_3_rl) => render_layer(
             s31_x,
@@ -280,9 +280,9 @@ pub fn write_default_game_window(
             s32_y,
             screen_3_rl
         )
-    };
+    }; }
 
-    match screen_4 {
+    if split_ratio_2 < 1.0 { match screen_4 {
         Screen::Empty => (),
         Screen::RenderLayer(screen_4_rl) => render_layer(
             s41_x,
@@ -291,9 +291,9 @@ pub fn write_default_game_window(
             s42_y,
             screen_4_rl
         )
-    };
+    }; }
 
-    match screen_5 {
+    if split_ratio_2 < 1.0 { match screen_5 {
         Screen::Empty => (),
         Screen::RenderLayer(screen_5_rl) => render_layer(
             s51_x,
@@ -302,7 +302,7 @@ pub fn write_default_game_window(
             s52_y,
             screen_5_rl
         )
-    };
+    }; }
 
     // Border layer
     
